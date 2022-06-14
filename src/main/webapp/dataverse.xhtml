@@ -436,21 +436,7 @@
                         <div id="actionButtonBlock" class="col-xs-12 button-block margin-bottom" jsf:rendered="#{!widgetWrapper.widgetView}">
                             <div class="row">
                                 <!-- Metrics for Root Dataverse -->
-                                <div id="metrics-block1" class="col-xs-4" jsf:rendered="#{DataversePage.isRootDataverse() and !settingsWrapper.rsyncOnly}">
-                                    <div id="metrics-label" class="col-xs-4 small text-center">
-                                        <h:outputLink value="#{settingsWrapper.metricsUrl}" target="_blank" title="#{bundle['metrics.title.tip']}" rendered="#{settingsWrapper.metricsUrl != null}">
-                                            <span class="glyphicon glyphicon-stats"/> #{bundle['metrics.title']}
-                                        </h:outputLink>
-                                        <ui:fragment rendered="#{settingsWrapper.metricsUrl == null}">
-                                            <span class="glyphicon glyphicon-stats"/> #{bundle['metrics.title']}
-                                        </ui:fragment>
-                                    </div>
-                                    <div id="metrics-content" class="col-xs-8 small text-center">
-                                        <h:outputFormat styleClass="metrics-downloads" value="{0} #{bundle['metrics.downloads']}">
-                                            <f:param value="#{guestbookResponseServiceBean.getCountOfAllGuestbookResponses()}"/>
-                                        </h:outputFormat>
-                                    </div>
-                                </div>
+
                                 <!-- END: Metrics for Root Dataverse-->
                                 <!-- ActionButtonBlock -->
                                 <div class="#{DataversePage.isRootDataverse() ? 'col-xs-8' : 'col-xs-12'} text-right padding-none">

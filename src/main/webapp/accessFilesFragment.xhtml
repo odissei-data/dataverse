@@ -1,0 +1,38 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+        xmlns:jsf="http://xmlns.jcp.org/jsf"
+        xmlns:pt="http://java.sun.com/jsf/passthrough"
+        xmlns:cc="http://java.sun.com/jsf/composite"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:iqbs="http://xmlns.jcp.org/jsf/composite/iqbs">
+    <o:importFunctions type="java.lang.Math" />
+    <p:remoteCommand name="refreshPaginator" action="#{DatasetPage.refreshPaginator()}" process="@this" update="@form" />
+
+    <ui:remove>
+        <!--
+        This fragment is included only on the dataset pg, empty editMode render logic
+        -->
+    </ui:remove>
+
+    <div class="form-horizontal">
+        <div class="form-group" jsf:rendered="true">
+            <!-- Username -->
+            <div class="col-sm-9">
+                <div class="help-block">
+                    <h:outputText value="#{bundle['odissei.access.file.text']}" escape="false">
+                    </h:outputText>
+                        <img width="100px" height="100px" src="#{bundle['odissei.logo.cbs.url']}" title="#{bundle['odissei.logo.cbs.description']}"  style="display:none"  onload="this.style.display='inline'" />
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- Files Table -->
+    <!-- TABLESTYLE + WIDTH:AUTO FIX COL WIDTH OVERFLOW HIDDEN, MIN-WIDTH 100% ADDED FOR TABLE CONTENT LESS THAN 100% https://stackoverflow.com/a/38582318 -->
+</ui:composition>

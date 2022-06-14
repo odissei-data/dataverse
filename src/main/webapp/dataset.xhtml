@@ -490,55 +490,7 @@
                                     <div style="clear:right;" class="col-xs-12 col-sm-12 col-md-4 col-lg-3 pull-right margin-bottom" 
                                          jsf:rendered="#{!(settingsWrapper.rsyncDownload or DatasetPage.workingVersion.deaccessioned)}">
                                         <!-- Metrics -->
-                                        <div id="metrics-block">
-                                            <div id="metrics-heading">
-                                                #{bundle['metrics.dataset.title']}
-                                                <ui:fragment rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
-                                                    <span class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="tooltip" data-placement="auto top" 
-                                                          data-trigger="hover" data-original-title="#{bundle['metrics.dataset.tip.default']}"></span>
-                                                </ui:fragment>
-                                                <ui:fragment rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
-                                                    <a tabindex="0" role="button" class="glyphicon glyphicon-question-sign tooltip-icon" data-toggle="popover" data-placement="auto top" 
-                                                       data-trigger="focus" data-html="true" data-content="#{bundle['metrics.dataset.tip.makedatacount']}"></a>
-                                                </ui:fragment>
-                                            </div>
-                                            <div id="metrics-body">
-                                                <!-- Classic downloads -->
-                                                <div class="metrics-count-block" jsf:rendered="#{!settingsWrapper.makeDataCountDisplayEnabled}">
-                                                    <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
-                                                        <f:param value="#{guestbookResponseServiceBean.getCountGuestbookResponsesByDatasetId(DatasetPage.dataset.id)}"/>
-                                                    </h:outputFormat>
-                                                    <span class="glyphicon glyphicon-question-sign tooltip-icon"
-                                                          data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.default.tip']}"></span>
-                                                </div>
-                                                <!-- Make Data Count views -->
-                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
-                                                    <h:outputFormat value="{0} #{bundle['metrics.views']}">
-                                                        <f:param value="#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getViewsTotal()}"/>
-                                                    </h:outputFormat>
-                                                    <span class="glyphicon glyphicon-question-sign tooltip-icon"
-                                                          data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.views.tip']}"></span>
-                                                </div>
-                                                <!-- Make Data Count downloads -->
-                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled}">
-                                                    <h:outputFormat value="{0} #{bundle['metrics.downloads']}">
-                                                        <f:param value="#{datasetMetricsServiceBean.getMetrics(DatasetPage.dataset).getDownloadsTotal()}"/>
-                                                    </h:outputFormat>
-                                                    <span class="glyphicon glyphicon-question-sign tooltip-icon"
-                                                          data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.downloads.makedatacount.tip']}"></span>
-                                                </div>
-                                                <!-- Make Data Count citations (DOIs only, not Handles) -->
-                                                <div class="metrics-count-block" jsf:rendered="#{settingsWrapper.makeDataCountDisplayEnabled and settingsWrapper.doiInstallation}">
-                                                    <p:commandLink oncomplete="PF('citationsDialog').show();">
-                                                        <h:outputFormat value="{0} #{bundle['metrics.citations']}">
-                                                            <f:param value="#{fn:length(datasetExternalCitationsServiceBean.getDatasetExternalCitationsByDataset(DatasetPage.dataset))}"/>
-                                                        </h:outputFormat>
-                                                    </p:commandLink>
-                                                    <span class="glyphicon glyphicon-question-sign tooltip-icon"
-                                                          data-toggle="tooltip" data-placement="auto top" data-original-title="#{bundle['metrics.dataset.citations.tip']}"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <!-- END: Metrics -->
                                     </div>
 
@@ -764,9 +716,9 @@
                             <h:inputHidden value="#{DatasetPage.lockedForAnyReason}" id="datasetLockedForAnyReasonVariable" />
                             <h:inputHidden value="#{DatasetPage.stateChanged}" id="datasetStateChangedVariable" />
                             <p:remoteCommand name="refreshAllLocksCommand" process="@this" update=":#{p:resolveClientId('datasetForm:pageRefreshFragment', view)},:messagePanel" actionListener="#{DatasetPage.refreshAllLocks()}"/>
-                            <p:remoteCommand name="refreshAllCommand" process="@this" update=":datasetForm:topDatasetBlockFragment,:datasetForm:tabView:filesTable,:messagePanel" action="#{DatasetPage.refresh()}"/>
+                            <p:remoteCommand name="refreshAllCommand" process="@this" update=":datasetForm:topDatasetBlockFragment,:messagePanel" action="#{DatasetPage.refresh()}"/>
                             <!-- see the comment in the javascript below that explains what this button is for -->
-                            <p:commandButton id="refreshButton" process="@this" widgetVar="refreshButton" update=":datasetForm:topDatasetBlockFragment,:datasetForm:tabView:filesTable" style="display:none"/>
+                            <p:commandButton id="refreshButton" process="@this" widgetVar="refreshButton" update=":datasetForm:topDatasetBlockFragment" style="display:none"/>
                             <script>
                                 //<![CDATA[
                                 // javascript for refreshing page when locks
@@ -827,11 +779,9 @@
                         <p:tabView id="tabView" widgetVar="content" activeIndex="#{DatasetPage.selectedTabIndex}"
                                    rendered="#{empty DatasetPage.editMode or (DatasetPage.editMode == 'METADATA' or DatasetPage.editMode == 'LICENSE')}">
                             <p:ajax event="tabChange" listener="#{DatasetPage.tabChanged}" oncomplete="bind_bsui_components();" update="@this" />
-                            <p:tab id="dataFilesTab" title="#{bundle.files}" 
-                                   rendered="#{(!DatasetPage.workingVersion.deaccessioned 
-                                               or (DatasetPage.workingVersion.deaccessioned and DatasetPage.canUpdateDataset())) 
-                                               and (empty DatasetPage.editMode)}">
-                                <ui:include src="filesFragment.xhtml"/>
+
+                            <p:tab id="accessDataFilesTab" title="#{bundle['odissei.access.file.tab.title']}">
+                                <ui:include src="accessFilesFragment.xhtml"/>
                             </p:tab>
                             <!-- 4.2.1: the 3 tabs below - metadata, terms and versions: these account for ~100 queries total -->
                             <!-- a lot of these however, are repeated queries on AuthenticatedUser and RoleAssignment; once these are optimized, the tabs will become very cheap. -->
@@ -1428,7 +1378,7 @@
                             </div>
                         </div>
                         <div class="button-block">
-                            <p:commandButton styleClass="btn btn-default" id="fileTagsPopupSaveButton" value="#{bundle.saveChanges}" oncomplete="PF('fileTagsPopup').hide()" update=":datasetForm:tabView:filesTable, :datasetForm" action="#{DatasetPage.saveFileTagsAndCategories()}"/>
+                            <p:commandButton styleClass="btn btn-default" id="fileTagsPopupSaveButton" value="#{bundle.saveChanges}" oncomplete="PF('fileTagsPopup').hide()" update=" :datasetForm" action="#{DatasetPage.saveFileTagsAndCategories()}"/>
                             <p:commandButton styleClass="btn btn-link" id="fileTagsPopupCancelButton" value="#{bundle.cancel}" onclick="PF('fileTagsPopup').hide();
                                     PF('blockDatasetForm').hide();" actionListener="#{DatasetPage.clearFileMetadataSelectedForTagsPopup()}"/>
                         </div>
