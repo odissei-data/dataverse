@@ -25,18 +25,14 @@
             <!-- Username -->
             <div class="col-sm-9">
                 <div class="help-block">
-                    <h:outputText value="#{bundle['odissei.access.file.text']}" escape="false"/>
-                    <ui:fragment  rendered="#{fn:startsWith(DatasetPage.dataset.owner.alias,'CBS')}">
+                    <ui:fragment  rendered="#{fn:startsWith(fn:toLowerCase(DatasetPage.dataset.owner.alias),'cbs')}">
                         <h:outputText value="#{bundle['odissei.access.file.cbs.text']}" escape="false"/>
-                        <img width="100px" height="100px" src="#{bundle['odissei.logo.cbs.url']}" title="#{bundle['odissei.logo.cbs.description']}" onload="this.style.display='inline'" />
                     </ui:fragment>
-                    <ui:fragment  rendered="#{fn:startsWith(DatasetPage.dataset.owner.alias,'liss')}">
+                    <ui:fragment  rendered="#{fn:startsWith(fn:toLowerCase(DatasetPage.dataset.owner.alias),'liss')}">
                         <h:outputText value="#{bundle['odissei.access.file.liss.text']}" escape="false"/>
-                        <img width="100px" height="100px" src="#{bundle['odissei.logo.liss.url']}" title="#{bundle['odissei.logo.liss.description']}" onload="this.style.display='inline'" />
                     </ui:fragment>
-                    <ui:fragment  rendered="#{fn:startsWith(DatasetPage.dataset.owner.alias,'easy')}">
+                    <ui:fragment  rendered="#{fn:startsWith(fn:toLowerCase(DatasetPage.dataset.owner.alias),'easy')}">
                         <h:outputText value="#{bundle['odissei.access.file.dans.text']}" escape="false"/>
-                        <img width="100px" height="100px" src="#{bundle['odissei.logo.dans.url']}" title="#{bundle['odissei.logo.dans.description']}" onload="this.style.display='inline'" />
                     </ui:fragment>
                 </div>
             </div>
